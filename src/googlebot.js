@@ -2,7 +2,9 @@ import { RtmClient, WebClient, RTM_EVENTS, CLIENT_EVENTS } from '@slack/client';
 import {
     isMessage,
     isFromUser,
+    isToUser,
     messageStartsWithText,
+    messageContainsText,
     pickRandom,
     filterResponsesByCategories,
     googleSearch
@@ -27,10 +29,13 @@ const googlebot = (botToken, options = {}) => {
 
     const allowedResponses = filterResponsesByCategories(responses, opt.specialCategories);
     rtm.on(RTM_EVENTS.MESSAGE, (event) => {
+        console.log("event.text: " + event.text);
+        var botName = '<@' + botId + '>';
+
         if (
             isMessage(event) &&
             !isFromUser(event, botId) &&
-            messageStartsWithText(event, opt.triggerOnWords)
+            messageContainsText(event, [botName])
         ) {
             const msgOptions = {
                 as_user: true,
@@ -40,7 +45,7 @@ const googlebot = (botToken, options = {}) => {
             };
 
             var firstSpace = event.text.indexOf(" ");
-            if (firstSpace === -1) {
+            if (!messageStartsWithText(event, botName) || firstSpace === -1) {
                 msgOptions.attachments[0].text = "What?"
             } else {
                 var searchString = event.text.substr(event.text.indexOf(" ") + 1);
