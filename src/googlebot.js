@@ -29,13 +29,13 @@ const googlebot = (botToken, options = {}) => {
 
     const allowedResponses = filterResponsesByCategories(responses, opt.specialCategories);
     rtm.on(RTM_EVENTS.MESSAGE, (event) => {
-        console.log("event.text: " + event.text);
         var botName = '<@' + botId + '>';
+        var isDirectMessage = event.channel[0] === 'D';
 
         if (
             isMessage(event) &&
             !isFromUser(event, botId) &&
-            messageContainsText(event, [botName])
+            (isDirectMessage || messageContainsText(event, [botName]))
         ) {
             const msgOptions = {
                 as_user: true,
@@ -45,8 +45,10 @@ const googlebot = (botToken, options = {}) => {
             };
 
             var firstSpace = event.text.indexOf(" ");
-            if (!messageStartsWithText(event, botName) || firstSpace === -1) {
-                msgOptions.attachments[0].text = "What?"
+            if ((!messageStartsWithText(event, botName) ||
+                    firstSpace === -1) &&
+                !isDirectMessage) {
+                msgOptions.attachments[0].text = "What do you want?"
             } else {
                 var searchString = event.text.substr(event.text.indexOf(" ") + 1);
                 const response = pickRandom(allowedResponses);
