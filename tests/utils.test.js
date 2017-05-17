@@ -3,12 +3,9 @@ import {
     isMessageToChannel,
     isFromUser,
     messageContainsText,
-    filterJokesByCategories,
+    filterResponsesByCategories,
     pickRandom,
 } from '../src/utils';
-
-var chai = require('chai');
-var expect = chai.expect;
 
 test('It should check if a given event is a message', () => {
     const notAMessage = {
@@ -100,8 +97,8 @@ test('It should check if a message contains some text', () => {
     expect(messageContainsText(message, ['bruce', 'chuck'])).toBe(true);
 });
 
-test('It should filter jokes by category', () => {
-    const jokes = [
+test('It should filter responses by category', () => {
+    const responses = [
         { text: 'a', categories: [] },
         { text: 'b', categories: ['foo'] },
         { text: 'c', categories: ['bar'] },
@@ -112,10 +109,10 @@ test('It should filter jokes by category', () => {
         { text: 'b', categories: ['foo'] },
     ];
 
-    const expected2 = jokes;
+    const expected2 = responses;
 
-    const filtered1 = filterJokesByCategories(jokes, ['foo']);
-    const filtered2 = filterJokesByCategories(jokes, ['foo', 'bar']);
+    const filtered1 = filterResponsesByCategories(responses, ['foo']);
+    const filtered2 = filterResponsesByCategories(responses, ['foo', 'bar']);
 
     expect(filtered1).toEqual(expected1);
     expect(filtered2).toEqual(expected2);
