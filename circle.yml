@@ -7,7 +7,7 @@ machine:
 
 dependencies:
   pre:
-    - echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+    - echo -e "$NPM_USER\n$NPM_PASS\n$NPM_EMAIL" | npm login
   override:
     - yarn
   cache_directories:
