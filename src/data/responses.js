@@ -17,6 +17,16 @@ const responses = [{
     id: 4,
     text: 'Check for yourself!',
     categories: ['condescending', 'rude'],
+},
+{
+    id: 5,
+    text: 'It is best to consult google before interrupting your team-mates',
+    categories: ['polite'],
+},
+{
+    id: 6,
+    text: 'Maybe next time you should try this first',
+    categories: ['polite'],
 }
 ];
 
