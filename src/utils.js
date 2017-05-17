@@ -6,8 +6,6 @@ export const isMessageToChannel = message => typeof message.channel === 'string'
 
 export const isFromUser = (event, userId) => event.user === userId;
 
-export const isToUser = (event, userId) => true;
-
 export const messageContainsText = (message, possibleTexts) => {
     const messageText = message.text.toLowerCase();
     const texts = Array.isArray(possibleTexts) ? possibleTexts : [possibleTexts];
@@ -61,17 +59,13 @@ export const googleSearch = (searchString) => {
             qs: queryStringFields
         };
 
-        console.log('Sending request');
         request(requestArgs,
             function(err, response, body) {
                 if (err) {
-                    console.log('Error: ' + err);
                     reject();
                 } else {
-                    console.log('Get response: ' + response.statusCode);
-                    console.log(body);
                     resolve(body);
                 }
-            })
+            });
     });
-}
+};

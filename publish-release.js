@@ -38,18 +38,18 @@ const uploadFile = releaseId => file => new Promise((resolve, reject) => {
 let releaseId;
 
 request({
-        uri: `${GH_API_ENDPOINT}/repos/${repo}/releases`,
-        method: 'POST',
-        body: JSON.stringify({
-            tag_name: release,
-            name: `v${release}`,
-        }),
-        headers: {
-            'User-Agent': USER_AGENT,
-            'Content-Type': 'application/json',
-            Authorization: `token ${token}`,
-        },
-    })
+    uri: `${GH_API_ENDPOINT}/repos/${repo}/releases`,
+    method: 'POST',
+    body: JSON.stringify({
+        tag_name: release,
+        name: `v${release}`,
+    }),
+    headers: {
+        'User-Agent': USER_AGENT,
+        'Content-Type': 'application/json',
+        Authorization: `token ${token}`,
+    },
+})
     .then((response) => {
         const data = JSON.parse(response);
         releaseId = data.id;

@@ -17,7 +17,7 @@ The GoogleBot is a Slack bot that offers polite or not-so-polite responses to qu
 As simple as installing any other global node package. Be sure to have npm and node (`>= 4.3.2` version) installed and launch:
 
 ```bash
-$ npm install -g googlebot
+$ npm install -g slack-googlebot
 ```
 
 
@@ -73,7 +73,7 @@ Create a local folder and install GoogleBot on it:
 mkdir googlebot-myorg
 cd googlebot-myorg
 npm init -y
-npm i --save googlebot
+npm i --save slack-googlebot
 ```
 
 Then create a new app on heroku:

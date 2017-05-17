@@ -2,12 +2,10 @@ import { RtmClient, WebClient, RTM_EVENTS, CLIENT_EVENTS } from '@slack/client';
 import {
     isMessage,
     isFromUser,
-    isToUser,
     messageStartsWithText,
     messageContainsText,
     pickRandom,
-    filterResponsesByCategories,
-    googleSearch
+    filterResponsesByCategories
 } from './utils';
 import responses from './data/responses';
 import pictures from './data/pictures';
@@ -44,13 +42,13 @@ const googlebot = (botToken, options = {}) => {
                 }, ],
             };
 
-            var firstSpace = event.text.indexOf(" ");
+            var firstSpace = event.text.indexOf(' ');
             if ((!messageStartsWithText(event, botName) ||
                     firstSpace === -1) &&
                 !isDirectMessage) {
-                msgOptions.attachments[0].text = "What do you want?"
+                msgOptions.attachments[0].text = 'What do you want?';
             } else {
-                var searchString = event.text.substr(event.text.indexOf(" ") + 1);
+                var searchString = event.text.substr(event.text.indexOf(' ') + 1);
                 const response = pickRandom(allowedResponses);
                 msgOptions.attachments[0].pretext = response.text;
 
