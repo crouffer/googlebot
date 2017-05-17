@@ -2,14 +2,19 @@ import { RtmClient, WebClient, RTM_EVENTS, CLIENT_EVENTS } from '@slack/client';
 import {
     isMessage,
     isFromUser,
+    isToUser,
+    messageStartsWithText,
     messageContainsText,
     pickRandom,
-    filterResponsesByCategories
+    filterResponsesByCategories,
+    googleSearch
 } from './utils';
 import responses from './data/responses';
 import pictures from './data/pictures';
 
 const defaultOptions = {
+    triggerOnWords: ['googlebot'],
+    specialCategories: ['polite', 'condescending', 'rude'],
     messageColor: '#590088',
     logger: console,
     rtmOptions: {},
@@ -24,20 +29,34 @@ const googlebot = (botToken, options = {}) => {
 
     const allowedResponses = filterResponsesByCategories(responses, opt.specialCategories);
     rtm.on(RTM_EVENTS.MESSAGE, (event) => {
+        var botName = '<@' + botId + '>';
+        var isDirectMessage = event.channel[0] === 'D';
+
         if (
             isMessage(event) &&
-            //isMessageToChannel(event) &&
             !isFromUser(event, botId) &&
-            messageContainsText(event, opt.triggerOnWords)
+            (isDirectMessage || messageContainsText(event, [botName]))
         ) {
-            const response = pickRandom(allowedResponses);
             const msgOptions = {
                 as_user: true,
                 attachments: [{
-                    color: opt.messageColor,
-                    title: response.text,
+                    color: opt.messageColor
                 }, ],
             };
+
+            var firstSpace = event.text.indexOf(" ");
+            if ((!messageStartsWithText(event, botName) ||
+                    firstSpace === -1) &&
+                !isDirectMessage) {
+                msgOptions.attachments[0].text = "What do you want?"
+            } else {
+                var searchString = event.text.substr(event.text.indexOf(" ") + 1);
+                const response = pickRandom(allowedResponses);
+                msgOptions.attachments[0].pretext = response.text;
+
+                var text = 'https://www.google.com/search?q=' + encodeURIComponent(searchString);
+                msgOptions.attachments[0].text = text;
+            }
 
             if (opt.usePictures) {
                 msgOptions.attachments[0].image_url = pickRandom(pictures);
