@@ -1,12 +1,13 @@
 import { RtmClient, WebClient, RTM_EVENTS, CLIENT_EVENTS } from '@slack/client';
 import {
     isMessage,
-    isMessageToChannel,
     isFromUser,
-    messageContainsText
+    messageContainsText,
+    pickRandom,
+    filterResponsesByCategories
 } from './utils';
 import responses from './data/responses';
-// import pictures from './data/pictures';
+import pictures from './data/pictures';
 
 const defaultOptions = {
     messageColor: '#590088',
