@@ -2,14 +2,17 @@ import { RtmClient, WebClient, RTM_EVENTS, CLIENT_EVENTS } from '@slack/client';
 import {
     isMessage,
     isFromUser,
-    messageContainsText,
+    messageStartsWithText,
     pickRandom,
-    filterResponsesByCategories
+    filterResponsesByCategories,
+    googleSearch
 } from './utils';
 import responses from './data/responses';
 import pictures from './data/pictures';
 
 const defaultOptions = {
+    triggerOnWords: ['googlebot'],
+    specialCategories: ['polite', 'condescending', 'rude'],
     messageColor: '#590088',
     logger: console,
     rtmOptions: {},
@@ -26,18 +29,27 @@ const googlebot = (botToken, options = {}) => {
     rtm.on(RTM_EVENTS.MESSAGE, (event) => {
         if (
             isMessage(event) &&
-            //isMessageToChannel(event) &&
             !isFromUser(event, botId) &&
-            messageContainsText(event, opt.triggerOnWords)
+            messageStartsWithText(event, opt.triggerOnWords)
         ) {
-            const response = pickRandom(allowedResponses);
             const msgOptions = {
                 as_user: true,
                 attachments: [{
-                    color: opt.messageColor,
-                    title: response.text,
+                    color: opt.messageColor
                 }, ],
             };
+
+            var firstSpace = event.text.indexOf(" ");
+            if (firstSpace === -1) {
+                msgOptions.attachments[0].text = "What?"
+            } else {
+                var searchString = event.text.substr(event.text.indexOf(" ") + 1);
+                const response = pickRandom(allowedResponses);
+                msgOptions.attachments[0].pretext = response.text;
+
+                var text = 'https://www.google.com/search?q=' + encodeURIComponent(searchString);
+                msgOptions.attachments[0].text = text;
+            }
 
             if (opt.usePictures) {
                 msgOptions.attachments[0].image_url = pickRandom(pictures);
