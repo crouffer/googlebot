@@ -1,7 +1,7 @@
 # googlebot
 
 [![CircleCI](https://circleci.com/gh/crouffer/googlebot.svg?style=shield)](https://circleci.com/gh/crouffer/googlebot)
-[![npm version](https://badge.fury.io/js/googlebot.svg)](http://badge.fury.io/js/googlebot)
+[![npm version](https://badge.fury.io/js/slack-googlebot.svg)](http://badge.fury.io/js/slack-googlebot)
 [![codecov](https://codecov.io/gh/crouffer/googlebot/branch/master/graph/badge.svg)](https://codecov.io/gh/crouffer/googlebot)
 [![Known Vulnerabilities](https://snyk.io/test/github/crouffer/googlebot/badge.svg)](https://snyk.io/test/github/crouffer/googlebot)
 
