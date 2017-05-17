@@ -45,27 +45,3 @@ export const filterResponsesByCategories = (responses, categories) => responses.
 });
 
 export const pickRandom = arr => arr[Math.floor(Math.random() * arr.length)];
-
-export const googleSearch = (searchString) => {
-    return new Promise((resolve, reject) => {
-        var request = require('request');
-
-        // Example: https://www.google.ca/search?q=what+is+today%27s+date&oq=what+is+today%27s+date
-        var queryStringFields = {
-            q: searchString
-        };
-        var requestArgs = {
-            url: 'https://www.google.com/search',
-            qs: queryStringFields
-        };
-
-        request(requestArgs,
-            function(err, response, body) {
-                if (err) {
-                    reject();
-                } else {
-                    resolve(body);
-                }
-            });
-    });
-};

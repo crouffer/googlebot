@@ -48,7 +48,13 @@ const googlebot = (botToken, options = {}) => {
                 !isDirectMessage) {
                 msgOptions.attachments[0].text = 'What do you want?';
             } else {
-                var searchString = event.text.substr(event.text.indexOf(' ') + 1);
+                var searchString;
+                if (isDirectMessage) {
+                    searchString = event.text;
+                } else {
+                    searchString = event.text.substr(event.text.indexOf(' ') + 1);
+                }
+
                 const response = pickRandom(allowedResponses);
                 msgOptions.attachments[0].pretext = response.text;
 

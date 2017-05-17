@@ -1,6 +1,6 @@
 {
     "name": "slack-googlebot",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "A Slack bot that reminds people to google things before asking their co-workers",
     "keywords": [
         "Slack",
